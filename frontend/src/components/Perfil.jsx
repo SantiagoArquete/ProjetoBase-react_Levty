@@ -11,7 +11,7 @@ function Perfil({ usuarioId, onLogout }) {
 
     const buscarPerfil = async () => {
       try {
-        const { data } = await api.get(`/perfil/${usuarioId}`);
+        const { data } = await api.get(`api/perfil/${usuarioId}`);
         setPerfil(data);
       } catch (err) {
         if (err.response) {

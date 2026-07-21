@@ -1,13 +1,15 @@
 // Permite comandos (GET, POST, PUT, DELETE)
-require("dotenv").config({ path: require('path').resolve(__dirname, "../.env") });
 const express = require("express");
+
+// Para ler dados do .env
+require("dotenv").config({ path: require('path').resolve(__dirname, "../.env") });
 
 // Permite requisições entre diferentes origens
 const cors = require("cors");
 
 // Permite conexão com o postgres
 const { Pool } = require("pg");
-''
+
 const path = require('path');
 
 const urlApi = process.env.API_URL_BACK;
@@ -83,8 +85,8 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-// Configuração para usar junto com o React
 
+// Configuração para usar junto com o React
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
 app.get("*", (req, res) => {

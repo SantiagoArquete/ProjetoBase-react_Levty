@@ -14,7 +14,7 @@ function Login({ onLogin }) {
     setErro('');
 
     try {
-      const { data } = await api.post('/login', { matricula, senha });
+      const { data } = await api.post('api/login', { matricula, senha });
       onLogin(data.usuario);
     } catch (error) {
       if (error.response) {
