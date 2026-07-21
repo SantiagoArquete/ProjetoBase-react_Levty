@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './Login.css';
+import api from '../services/api';
 
 function Login({ onLogin }) {
   const [matricula, setMatricula] = useState('');
@@ -13,24 +14,16 @@ function Login({ onLogin }) {
     setErro('');
 
     try {
-      
-      const response = await fetch('http://localhost:3001/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ matricula, senha })
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        onLogin(data.usuario);
-      } else {
-        setErro(data.erro || 'Falha no login');
-      }
+      const { data } = await api.post('/login', { matricula, senha });
+      onLogin(data.usuario);
     } catch (error) {
-      setErro('Erro de conexão. Tente novamente.');
+      if (error.response) {
+        // Erro retornado pelo servidor (4xx, 5xx)
+        setErro(error.response.data?.erro || 'Falha no login');
+      } else {
+        // Erro de rede / sem conexão
+        setErro('Erro de conexão. Tente novamente.');
+      }
     } finally {
       setLoading(false);
     }

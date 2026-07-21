@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './Perfil.css';
+import api from '../services/api';
 
 function Perfil({ usuarioId, onLogout }) {
   const [perfil, setPerfil] = useState(null);
@@ -10,14 +11,14 @@ function Perfil({ usuarioId, onLogout }) {
 
     const buscarPerfil = async () => {
       try {
-        const response = await fetch(`http://localhost:3001/api/perfil/${usuarioId}`);
-        if (!response.ok) {
-          throw new Error('Falha ao carregar dados do perfil.');
-        }
-        const data = await response.json();
+        const { data } = await api.get(`/perfil/${usuarioId}`);
         setPerfil(data);
       } catch (err) {
-        setErro(err.message);
+        if (err.response) {
+          setErro(err.response.data?.erro || 'Falha ao carregar dados do perfil.');
+        } else {
+          setErro('Erro de conexão. Tente novamente.');
+        }
       } finally {
         setLoading(false);
       }
